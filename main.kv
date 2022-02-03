@@ -1,0 +1,156 @@
+<SwipeToDeleteItem>:
+    size_hint_y: None
+    height: 60
+    type_swipe: 'hand'
+    id: task_swipe
+    # anchor:'right'
+    # spacing:100
+
+    MDCardSwipeLayerBox:
+        # content under the card
+        MDIconButton:
+            icon: 'trash-can'
+            pos_hint:{'center_y':.5}
+            # on_release: root.delete_task_dialog()
+            on_release: app.remove_task(root)
+            md_bg_color: 1,0,0,1
+
+        MDIconButton:
+            icon: 'pen'
+            pos_hint:{'center_y':.5}
+            text_color: 1,0,0,1
+            on_release: app.edit_task_dialog(root)
+            
+
+
+    MDCardSwipeFrontBox:
+        # content of the card
+        TwoLineListItem:
+            
+            id:content
+            text: root.text
+            secondary_text: root.secondary_text
+            _no_ripple_effect: True
+            RightCheckbox:
+                pos_hint:{'center_x':.9}
+                on_release: app.mark(check, task_swipe)
+                id: check
+                    
+
+
+
+<Mainwindow>:
+    orientation:'vertical'
+
+    MDToolbar:
+        id:tool
+        title: 'MyTodo'
+        md_bg_color:.2,.2,.2,1
+        right_action_items: [['palette', lambda x: root.palette()]]
+        
+
+    MDBottomNavigation:
+        panel_color: .2,.2,.2,1
+
+        MDBottomNavigationItem:
+            text: 'Today'
+            name: 'Today_task_screen'
+            icon:'clipboard'
+           
+            ScrollView:
+                
+                MDList:
+                    id: today_task
+                    spacing:10
+
+        MDBottomNavigationItem:
+            text: 'All Tasks'
+            name: 'All_task_screen'
+            icon:'clipboard-alert-outline'
+           
+
+            ScrollView:
+                
+                MDList:
+                    id: task_list
+                    spacing:10
+
+
+        MDBottomNavigationItem:
+            text: 'COMPLETED'
+            name: 'Completed_screen'
+            icon:'checkbox-multiple-marked'
+
+            ScrollView:
+                
+                MDList:
+                    id: completed_list
+                    spacing:10
+
+
+                    
+
+        MDBottomNavigationItem:
+            text: 'Add task'
+            name: 'Add_taskscreen'
+            icon:'plus'
+
+            MDLabel:
+                text: 'Add new task'
+                bold:True
+                size_hint_y: None
+                height: 300
+                font_size: 25
+                pos_hint: {'center_x':.7 , 'center_y':.95 }
+
+            MDTextField:
+                id: task
+                hint_text: 'add new task'
+                max_text_length: 25
+                pos_hint: {'center_x':0.5 , 'center_y':0.8 }
+                size_hint_x: None
+                width: 300 
+
+            MDLabel:
+                text:"Date:"
+                bold: True
+                font_size: 15
+                pos_hint: {'center_x':0.5,'center_y':0.7 }
+
+            MDLabel:
+                id: date_text
+                text:root.current_date
+                bold: True
+                font_size: 15
+                pos_hint: {'center_x':0.65,'center_y':0.7 }
+
+            
+
+            MDIconButton:
+                icon: 'calendar'
+                pos_hint: {'center_x':0.9,'center_y':0.7 }
+                on_press: root.date_selecter()
+                
+
+            MDFillRoundFlatButton:
+                text: 'Add Task'
+                pos_hint: {'center_x':0.5 , 'center_y':0.6 }
+                on_release: root.add_tasks()
+
+
+<Edit_content>:
+    orientation: 'vertical'
+    spacing: "10dp"
+    size_hint_y: None
+    height: "120dp"
+
+    MDTextField:
+        id: edit_task
+        hint_text: 'Task'
+        helper_text: "New task"
+        helper_text_mode: "on_focus"
+
+    MDTextField:
+        id: edit_date
+        hint_text: 'Date: DD/MM/YYYY'
+        
